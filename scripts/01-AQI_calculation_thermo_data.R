@@ -290,3 +290,7 @@ air_quality_data <- dataaggfinal %>%
 
 saveRDS(air_quality_data, file="./data/air_quality_data.rds") #https://stackoverflow.com/questions/19967478/how-to-save-data-file-into-rdata
 saveRDS(data_thermo_agg, file="./data/air_quality_data_ugm3.rds")
+
+
+readr::write_csv(air_quality_data, file="./data/air_quality_data.csv")
+readr::write_csv(data_thermo_agg, file="./data/air_quality_data_ugm3.csv")

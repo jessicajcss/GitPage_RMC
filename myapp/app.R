@@ -23,6 +23,7 @@ library(openair)
 library(openairmaps)
 library(dplyr)
 library(zoo)
+#library(webr)
 
 
 #  --------------------------------------------------------------------------------------------------------
@@ -30,13 +31,15 @@ library(zoo)
 #  --------------------------------------------------------------------------------------------------------
 
 # UPDATE DATASET USING: source("./scripts/01-AQI_calculation_thermo_data.R")
-air_quality_data <- readRDS("./data/air_quality_data.rds")
-air_quality_data_ugm3 <- readRDS("./data/air_quality_data_ugm3.rds")
+#air_quality_data <- readRDS("./data/air_quality_data.rds")
+#air_quality_data_ugm3 <- readRDS("./data/air_quality_data_ugm3.rds")
+air_quality_data <- readr::read_csv("https://raw.githubusercontent.com/jessicajcss/GitPage_RMC/main/data/air_quality_data.csv")
+air_quality_data_ugm3 <- readr::read_csv("https://raw.githubusercontent.com/jessicajcss/GitPage_RMC/main/data/air_quality_data_ugm3.csv")
 
 
 # ---
-localizacao <- read.csv("./data/locais_sensores.csv",
-                        sep = ";")
+localizacao <- read.csv("https://raw.githubusercontent.com/jessicajcss/GitPage_RMC/main/data/locais_sensores.csv",
+                               sep = ";")
 
 thermo_localizacao <- localizacao %>%
   subset((Local == "Defesa Civil" | Local == "Prefeitura") & Tipo == 'outdoor') %>%
@@ -47,7 +50,8 @@ colnames(thermo_localizacao) <- c('Cidade', 'Latitude', 'Longitude')
 
 
 # ---
-meteo <- read.csv("./data/meteo_hour.csv")
+meteo <- readr::read_csv("https://raw.githubusercontent.com/jessicajcss/GitPage_RMC/main/data/meteo_hour.csv")
+
 
 meteo <- meteo %>%
   mutate(data = ifelse(str_detect(date, ":00"),
@@ -411,7 +415,7 @@ server <- function(input, output) {
 
   # reading csv file containing precautions from pollutants
 
-  Poltab <- read.csv("./data/pollutants_table.csv")
+  Poltab <- read.csv("https://raw.githubusercontent.com/jessicajcss/GitPage_RMC/main/data/pollutants_table.csv")
   pm2_5data <- Poltab[Poltab$Poluente == " PM2.5", ]
   pm10data <- Poltab[Poltab$Poluente == " PM10", ]
   no2data <- Poltab[Poltab$Poluente == " NO2", ]
@@ -505,7 +509,7 @@ server <- function(input, output) {
 
   # ------------------------------------------------------TAB1--------------------------------------------------
 
-  AQItab <- read.csv("./data/AQItab.csv")
+  AQItab <- read.csv("https://raw.githubusercontent.com/jessicajcss/GitPage_RMC/main/data/AQItab.csv")
 
   output$tableAQI <- renderTable({AQItab}, #https://gallery.shinyapps.io/109-render-table/
                                  striped = TRUE,
